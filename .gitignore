@@ -34,3 +34,8 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+.prettierrc
+package-lock.json
+package-lock.json
+.vscode/launch.json
+.vscode/settings.json

@@ -7,6 +7,8 @@ import formatDate from '@/lib/utils/formatDate'
 
 import NewsletterForm from '@/components/NewsletterForm'
 
+import SideWidget from './side'
+
 const MAX_DISPLAY = 5
 
 export async function getStaticProps() {
@@ -91,6 +93,7 @@ export default function Home({ posts }) {
           </Link>
         </div>
       )}
+      <SideWidget />
       {siteMetadata.newsletter.provider !== '' && (
         <div className="flex items-center justify-center pt-4">
           <NewsletterForm />
