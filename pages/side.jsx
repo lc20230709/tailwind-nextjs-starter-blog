@@ -5,24 +5,16 @@ const handleLinkClick = (url) => {
 };
 
 const Widget = ({ title, imageUrl, link }) => (
-  <div className="">
-    <a
-      className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-      onClick={() => handleLinkClick(link)}
-    >
+  <div className="w-10/12">
+    <a className="items-center" onClick={() => handleLinkClick(link)}>
       {title}
     </a>
-    <img
-      src={imageUrl}
-      className="w-full cursor-pointer"
-      href={link}
-      onClick={() => handleLinkClick(link)}
-    />
+    <img src={imageUrl} href={link} onClick={() => handleLinkClick(link)} />
   </div>
 );
 
 const DataDisplay = ({ data }) => (
-  <div className="-mx-2 flex flex-wrap">
+  <div className="flex">
     {data.map((item, index) => (
       <div key={index} className="">
         <Widget title={item.title} imageUrl={item.imageUrl} link={item.link} />
@@ -56,7 +48,7 @@ const SideWidget = () => {
   ];
 
   return (
-    <div className="flex items-center justify-center pt-4">
+    <div className="flex flex-wrap justify-center">
       <div>
         <DataDisplay data={widgetData} />
       </div>
