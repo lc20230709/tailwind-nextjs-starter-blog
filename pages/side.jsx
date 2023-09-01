@@ -48,7 +48,7 @@ const SideWidget = () => {
   ];
 
   return (
-    <div className="flex flex-wrap justify-center">
+    <div className="flex flex-wrap justify-center text-center">
       <div>
         <DataDisplay data={widgetData} />
       </div>
