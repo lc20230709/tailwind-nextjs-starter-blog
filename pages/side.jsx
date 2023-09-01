@@ -6,10 +6,15 @@ const handleLinkClick = (url) => {
 
 const Widget = ({ title, imageUrl, link }) => (
   <div className="w-10/12">
-    <a className="items-center" onClick={() => handleLinkClick(link)}>
+    <a className="hover:bg-red-700" onClick={() => handleLinkClick(link)}>
       {title}
     </a>
-    <img src={imageUrl} href={link} onClick={() => handleLinkClick(link)} />
+    <img
+      src={imageUrl}
+      href={link}
+      onClick={() => handleLinkClick(link)}
+      className="hover:scale-110"
+    />
   </div>
 );
 
@@ -48,7 +53,7 @@ const SideWidget = () => {
   ];
 
   return (
-    <div className="flex flex-wrap justify-center text-center">
+    <div className="flex cursor-pointer flex-wrap justify-center text-center">
       <div>
         <DataDisplay data={widgetData} />
       </div>
