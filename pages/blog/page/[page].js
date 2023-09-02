@@ -4,7 +4,7 @@ import { getAllFilesFrontMatter } from '@/lib/mdx'
 import ListLayout from '@/layouts/ListLayout'
 import { POSTS_PER_PAGE } from '../../blog'
 
-export async function getStaticPaths() {
+export async function getServerSideProps() {
   const totalPosts = await getAllFilesFrontMatter('blog')
   const totalPages = Math.ceil(totalPosts.length / POSTS_PER_PAGE)
   const paths = Array.from({ length: totalPages }, (_, i) => ({
@@ -17,7 +17,7 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   const {
     params: { page },
   } = context
