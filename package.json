@@ -23,6 +23,7 @@
     "github-slugger": "^1.3.0",
     "gray-matter": "^4.0.2",
     "image-size": "1.0.0",
+    "ionic": "^5.4.16",
     "isomorphic-unfetch": "^4.0.2",
     "mdx-bundler": "^8.0.0",
     "next": "12.1.4",

@@ -2,12 +2,12 @@ import Link from "@/components/Link";
 import { PageSEO } from "@/components/SEO";
 import Tag from "@/components/Tag";
 import siteMetadata from "@/data/siteMetadata";
-import { getAllTags } from "@/lib/tags";
 import kebabCase from "@/lib/utils/kebabCase";
 
-export async function getStaticProps() {
-  const tags = await getAllTags("blog");
-
+export async function getServerSideProps() {
+  const tagUrl = process.env.NEXT_PUBLIC_GETTAG;
+  const response = await fetch(tagUrl, { method: "POST" });
+  const tags = JSON.parse(await response.json())["tags"];
   return { props: { tags } };
 }
 

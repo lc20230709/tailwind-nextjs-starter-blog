@@ -2,12 +2,7 @@ import fs from "fs";
 import PageTitle from "@/components/PageTitle";
 import generateRss from "@/lib/generate-rss";
 import { MDXLayoutRenderer } from "@/components/MDXComponents";
-import {
-  formatSlug,
-  getAllFilesFrontMatter,
-  getFileBySlug,
-  getFiles,
-} from "@/lib/mdx";
+import { formatSlug, getFileBySlug, getFiles } from "@/lib/mdx";
 
 const DEFAULT_LAYOUT = "PostLayout";
 
@@ -24,7 +19,11 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const allPosts = await getAllFilesFrontMatter("blog");
+  const apiUrl = process.env.NEXT_PUBLIC_BACKEND;
+  const response = await fetch(apiUrl, { method: "POST" });
+
+  const allPosts = JSON.parse(await response.json())["initialDisplayPosts"];
+
   const postIndex = allPosts.findIndex(
     (post) => formatSlug(post.slug) === params.slug.join("/")
   );
