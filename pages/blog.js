@@ -1,26 +1,39 @@
-import { getAllFilesFrontMatter } from '@/lib/mdx'
-import siteMetadata from '@/data/siteMetadata'
-import ListLayout from '@/layouts/ListLayout'
-import { PageSEO } from '@/components/SEO'
+import siteMetadata from "@/data/siteMetadata";
+import ListLayout from "@/layouts/ListLayout";
+import { PageSEO } from "@/components/SEO";
+import fetch from "isomorphic-unfetch";
 
-export const POSTS_PER_PAGE = 5
+export const POSTS_PER_PAGE = 5;
+
+const apiUrl = process.env.NEXT_PUBLIC_BACKEND;
 
 export async function getServerSideProps() {
-  const posts = await getAllFilesFrontMatter('blog')
-  const initialDisplayPosts = posts.slice(0, POSTS_PER_PAGE)
-  const pagination = {
-    currentPage: 1,
-    totalPages: Math.ceil(posts.length / POSTS_PER_PAGE),
-  }
+  const response = await fetch(apiUrl, { method: "POST" });
 
-  return { props: { initialDisplayPosts, posts, pagination } }
+  const posts = JSON.parse(await response.json());
+  const initialDisplayPosts = posts["initialDisplayPosts"];
+
+  const pagination = {
+    currentPage: posts["currentPage"],
+    totalPages: posts["totalPages"],
+  };
+
+  return {
+    props: {
+      initialDisplayPosts: initialDisplayPosts || null,
+      posts: initialDisplayPosts || null,
+      pagination: pagination || null,
+    },
+  };
 }
 
 export default function Blog({ posts, initialDisplayPosts, pagination }) {
-
   return (
     <>
-      <PageSEO title={`Blog - ${siteMetadata.author}`} description={siteMetadata.description} />
+      <PageSEO
+        title={`Blog - ${siteMetadata.author}`}
+        description={siteMetadata.description}
+      />
       <ListLayout
         posts={posts}
         initialDisplayPosts={initialDisplayPosts}
@@ -28,5 +41,5 @@ export default function Blog({ posts, initialDisplayPosts, pagination }) {
         title="All Posts"
       />
     </>
-  )
+  );
 }
