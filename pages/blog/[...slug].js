@@ -1,17 +1,21 @@
-import fs from "fs";
 import PageTitle from "@/components/PageTitle";
-import generateRss from "@/lib/generate-rss";
 import { MDXLayoutRenderer } from "@/components/MDXComponents";
-import { formatSlug, getFileBySlug, getFiles } from "@/lib/mdx";
+import { formatSlug, getFileBySlug } from "@/lib/mdx";
 
 const DEFAULT_LAYOUT = "PostLayout";
 
 export async function getStaticPaths() {
-  const posts = getFiles("blog");
+  const apiUrl = process.env.NEXT_PUBLIC_BACKEND;
+
+  const response = await fetch(apiUrl, { method: "POST" });
+
+  const allposts = JSON.parse(await response.json());
+  const posts = allposts["initialDisplayPosts"];
+
   return {
     paths: posts.map((p) => ({
       params: {
-        slug: formatSlug(p).split("/"),
+        slug: formatSlug(p.slug).split("/"),
       },
     })),
     fallback: false,
@@ -27,6 +31,8 @@ export async function getStaticProps({ params }) {
   const postIndex = allPosts.findIndex(
     (post) => formatSlug(post.slug) === params.slug.join("/")
   );
+
+  console.log(params.slug, "12377788");
   const prev = allPosts[postIndex + 1] || null;
   const next = allPosts[postIndex - 1] || null;
   const post = await getFileBySlug("blog", params.slug.join("/"));
@@ -36,13 +42,6 @@ export async function getStaticProps({ params }) {
     return authorResults.frontMatter;
   });
   const authorDetails = await Promise.all(authorPromise);
-
-  // rss
-  if (allPosts.length > 0) {
-    const rss = generateRss(allPosts);
-    fs.writeFileSync("./public/feed.xml", rss);
-  }
-
   return { props: { post, authorDetails, prev, next } };
 }
 

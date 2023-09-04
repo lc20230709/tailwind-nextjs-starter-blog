@@ -17,6 +17,9 @@ export async function getServerSideProps() {
 
   const data = JSON.parse(await response.json());
   const posts = data["initialDisplayPosts"];
+  console.log(123);
+  console.log(posts);
+  console.log(123);
 
   return { props: { posts } };
 }
