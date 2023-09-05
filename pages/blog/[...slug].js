@@ -32,10 +32,10 @@ export async function getStaticProps({ params }) {
     (post) => formatSlug(post.slug) === params.slug.join("/")
   );
 
-  console.log(params.slug, "12377788");
   const prev = allPosts[postIndex + 1] || null;
   const next = allPosts[postIndex - 1] || null;
   const post = await getFileBySlug("blog", params.slug.join("/"));
+
   const authorList = post.frontMatter.authors || ["default"];
   const authorPromise = authorList.map(async (author) => {
     const authorResults = await getFileBySlug("authors", [author]);

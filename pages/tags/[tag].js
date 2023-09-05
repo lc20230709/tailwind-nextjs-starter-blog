@@ -30,7 +30,6 @@ export async function getStaticProps({ params }) {
       post.tags.map((t) => kebabCase(t)).includes(params.tag)
   );
 
-  console.log(filteredPosts);
   return { props: { posts: filteredPosts, tag: params.tag } };
 }
 
