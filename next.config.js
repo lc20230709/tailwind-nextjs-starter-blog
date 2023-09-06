@@ -81,6 +81,7 @@ module.exports = withBundleAnalyzer({
         "react-dom/test-utils": "preact/test-utils",
         "react-dom": "preact/compat",
       });
+      config.devtool = "source-map";
     }
 
     return config;
