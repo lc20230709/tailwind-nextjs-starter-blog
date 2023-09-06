@@ -8,7 +8,6 @@ export async function getStaticPaths() {
   const apiUrl = process.env.NEXT_PUBLIC_BACKEND;
 
   const response = await fetch(apiUrl, { method: "POST" });
-
   const allposts = JSON.parse(await response.json());
   const posts = allposts["initialDisplayPosts"];
 

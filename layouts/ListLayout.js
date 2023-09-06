@@ -10,6 +10,9 @@ export default function ListLayout({
   initialDisplayPosts = [],
   pagination,
 }) {
+  console.log(2001, title);
+  console.log(2000, posts);
+  console.log(2002, initialDisplayPosts);
   const [searchValue, setSearchValue] = useState("");
   const filteredBlogPosts = posts.filter((frontMatter) => {
     const searchContent =

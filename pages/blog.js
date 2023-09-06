@@ -11,6 +11,7 @@ export async function getServerSideProps() {
   const response = await fetch(apiUrl, { method: "POST" });
 
   const posts = JSON.parse(await response.json());
+  console.log("all posts", posts);
   const initialDisplayPosts = posts["initialDisplayPosts"];
 
   const pagination = {
@@ -28,6 +29,7 @@ export async function getServerSideProps() {
 }
 
 export default function Blog({ posts, initialDisplayPosts, pagination }) {
+  console.log("blogjs", posts);
   return (
     <>
       <PageSEO

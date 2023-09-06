@@ -8,8 +8,9 @@ const tagUrl = process.env.NEXT_PUBLIC_GETTAG;
 
 export async function getStaticPaths() {
   const response = await fetch(tagUrl, { method: "POST" });
+  const tagsRes = await response.json();
+  const tags = JSON.parse(tagsRes)["tags"];
 
-  const tags = JSON.parse(await response.json())["tags"];
   return {
     paths: Object.keys(tags).map((tag) => ({
       params: {
@@ -24,6 +25,7 @@ export async function getStaticProps({ params }) {
   const response = await fetch(apiUrl, { method: "POST" });
 
   const allPosts = JSON.parse(await response.json())["initialDisplayPosts"];
+  console.log(allPosts);
   const filteredPosts = allPosts.filter(
     (post) =>
       post.draft !== true &&
@@ -42,6 +44,7 @@ export default function Tag({ posts, tag }) {
         title={`${tag} - ${siteMetadata.author}`}
         description={`${tag} tags - ${siteMetadata.author}`}
       />
+      console.log("tagjs",posts);
       <ListLayout posts={posts} title={title} />
     </>
   );
