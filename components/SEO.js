@@ -96,7 +96,9 @@ export const BlogSEO = ({
   url,
   images = [],
   canonicalUrl,
+  description,
 }) => {
+  summary = description;
   const router = useRouter();
   const publishedAt = new Date(date).toISOString();
   const modifiedAt = new Date(lastmod || date).toISOString();

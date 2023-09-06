@@ -29,7 +29,8 @@ export default function PostLayout({
   prev,
   children,
 }) {
-  const { slug, fileName, date, title, images, tags } = frontMatter;
+  const { slug, fileName, date, title, images, tags, description } =
+    frontMatter;
 
   return (
     <SectionContainer>
