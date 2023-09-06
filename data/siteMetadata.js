@@ -1,7 +1,7 @@
 const siteMetadata = {
   title: "Next.js Starter Blog",
-  author: "恋爱秘籍",
-  headerTitle: "恋爱秘籍 20万+文章",
+  author: "恋爱秘籍 20万+文章",
+  headerTitle: "恋爱秘籍",
   description: "探讨恋爱秘籍 20万篇高情商解答 让你的感情生活更加美满和幸福。",
   language: "en-us",
   theme: "system", // system, dark or light
