@@ -28,7 +28,6 @@ export async function getServerSideProps() {
 }
 
 export default function Blog({ posts, initialDisplayPosts, pagination }) {
-  console.log("blogjs", posts);
   return (
     <>
       <PageSEO

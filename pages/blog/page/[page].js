@@ -9,8 +9,6 @@ export default function PostPage({ posts, initialDisplayPosts, pagination }) {
         title={siteMetadata.title}
         description={siteMetadata.description}
       />
-      console.log("pagejs",posts);
-      console.log("initialDisplayPosts",initialDisplayPosts);
       <ListLayout
         posts={posts}
         initialDisplayPosts={initialDisplayPosts}
