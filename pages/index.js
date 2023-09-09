@@ -8,12 +8,16 @@ import NewsletterForm from "@/components/NewsletterForm";
 
 import SideWidget from "./side";
 
-const MAX_DISPLAY = 5;
+const MAX_DISPLAY = 50;
 
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND;
 
 export async function getServerSideProps() {
-  const response = await fetch(apiUrl, { method: "POST" });
+  const response = await fetch(apiUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ page: 0 }),
+  });
 
   const data = JSON.parse(await response.json());
   const posts = data["initialDisplayPosts"];
