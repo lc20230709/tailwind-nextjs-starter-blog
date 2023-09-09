@@ -8,7 +8,11 @@ export const POSTS_PER_PAGE = 5;
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND;
 
 export async function getServerSideProps() {
-  const response = await fetch(apiUrl, { method: "POST" });
+  const response = await fetch(apiUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ page: 0 }),
+  });
 
   const posts = JSON.parse(await response.json());
   const initialDisplayPosts = posts["initialDisplayPosts"];

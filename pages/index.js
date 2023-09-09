@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import Link from "@/components/Link";
 import { PageSEO } from "@/components/SEO";
 import Tag from "@/components/Tag";
@@ -7,6 +8,8 @@ import formatDate from "@/lib/utils/formatDate";
 import NewsletterForm from "@/components/NewsletterForm";
 
 import SideWidget from "./side";
+
+import Pagination from "./Pagination";
 
 const MAX_DISPLAY = 50;
 
@@ -20,12 +23,32 @@ export async function getServerSideProps() {
   });
 
   const data = JSON.parse(await response.json());
-  const posts = data["initialDisplayPosts"];
+  const currentPosts = data["initialDisplayPosts"];
+  const totalPages = data["totalPages"];
 
-  return { props: { posts } };
+  return { props: { currentPosts, totalPages } };
 }
 
-export default function Home({ posts }) {
+export default function Home({ currentPosts, totalPages }) {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [posts, setCurrentPosts] = useState(currentPosts);
+
+  const handlePageChange = async (pageIn) => {
+    setCurrentPage(pageIn);
+
+    console.log(pageIn);
+    const response = await fetch(apiUrl, {
+      mode: "cors",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ page: pageIn }),
+    });
+
+    const data = JSON.parse(await response.json());
+    const newPosts = data["initialDisplayPosts"];
+    setCurrentPosts(newPosts);
+  };
+
   return (
     <>
       <PageSEO
@@ -105,6 +128,13 @@ export default function Home({ posts }) {
         </div>
       )}
       <SideWidget />
+
+      <Pagination
+        totalPages={totalPages}
+        onPageChange={handlePageChange}
+        currentPage={currentPage}
+      />
+
       {siteMetadata.newsletter.provider !== "" && (
         <div className="flex items-center justify-center pt-4">
           <NewsletterForm />
