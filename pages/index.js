@@ -36,7 +36,6 @@ export default function Home({ currentPosts, totalPages }) {
   const handlePageChange = async (pageIn) => {
     setCurrentPage(pageIn);
 
-    console.log(pageIn);
     const response = await fetch(apiUrl, {
       mode: "cors",
       method: "POST",

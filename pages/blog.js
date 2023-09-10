@@ -20,7 +20,6 @@ export async function getServerSideProps() {
   const posts = JSON.parse(await response.json());
   const initialDisplayPosts = posts["initialDisplayPosts"];
 
-  console.log(initialDisplayPosts);
   const title = posts["page_title"];
   const searchKeyWord = posts["search_keys_words"];
   const totalPages = posts["totalPages"];
