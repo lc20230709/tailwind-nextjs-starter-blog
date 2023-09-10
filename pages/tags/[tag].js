@@ -3,6 +3,11 @@ import siteMetadata from "@/data/siteMetadata";
 import ListLayout from "@/layouts/ListLayout";
 import kebabCase from "@/lib/utils/kebabCase";
 
+import SideWidget from "pages/side";
+
+import Pagination from "pages/Pagination";
+import { useState } from "react";
+
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND;
 const tagUrl = process.env.NEXT_PUBLIC_GETTAG;
 
@@ -22,28 +27,49 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const response = await fetch(apiUrl, { method: "POST" });
 
-  const allPosts = JSON.parse(await response.json())["initialDisplayPosts"];
-  const filteredPosts = allPosts.filter(
-    (post) =>
-      post.draft !== true &&
-      post.tags.map((t) => kebabCase(t)).includes(params.tag)
-  );
+  const tagLists = process.env.NEXT_PUBLIC_BACKEND_TAG;
+  const response = await fetch(tagLists, { method: "POST",    headers: { "Content-Type": "application/json" },body: JSON.stringify({ page: 0, pagetype: "tag", tag:params.tag }) });
 
-  return { props: { posts: filteredPosts, tag: params.tag } };
+  const posts = JSON.parse(await response.json());
+  const initialDisplayPosts = posts["initialDisplayPosts"];
+
+
+  const searchKeyWord = posts["search_keys_words"];
+  const totalPages = posts["totalPages"];
+
+  return { props: { 
+      initialDisplayPosts: initialDisplayPosts || null,
+      totalPages: totalPages || null,
+      tag: params.tag || null
+   } };
 }
 
-export default function Tag({ posts, tag }) {
+export default function Tag({ initialDisplayPosts,totalPages,tag }) {
   // Capitalize first letter and convert space to dash
-  const title = tag[0].toUpperCase() + tag.split(" ").join("-").slice(1);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPosts, setCurrentPosts] = useState(initialDisplayPosts);
+  const handlePageChange = async (pageIn) => {
+    setCurrentPage(pageIn);
+    const response = await fetch(apiUrl, {
+      mode: "cors",
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ page: pageIn }),
+    });
+
+    const data = JSON.parse(await response.json());
+    const newPosts = data["initialDisplayPosts"];
+    setCurrentPosts(newPosts);
+  };
   return (
     <>
       <TagSEO
         title={`${tag} - ${siteMetadata.author}`}
         description={`${tag} tags - ${siteMetadata.author}`}
       />
-      <ListLayout posts={posts} title={title} />
+      <ListLayout initialDisplayPosts={initialDisplayPosts} pageTitle={tag} defaultSearch={tag} />
+      <SideWidget />
     </>
   );
 }

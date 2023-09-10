@@ -24,11 +24,6 @@ export async function getServerSideProps() {
   const searchKeyWord = posts["search_keys_words"];
   const totalPages = posts["totalPages"];
 
-  const pagination = {
-    currentPage: posts["currentPage"],
-    totalPages: posts["totalPages"],
-  };
-
   return {
     props: {
       initialDisplayPosts: initialDisplayPosts || null,
