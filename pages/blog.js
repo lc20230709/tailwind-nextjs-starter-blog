@@ -4,6 +4,7 @@ import { PageSEO } from "@/components/SEO";
 import fetch from "isomorphic-unfetch";
 import { useState } from "react";
 import Pagination from "./Pagination";
+import SideWidget from "./side";
 
 export const POSTS_PER_PAGE = 5;
 
@@ -13,13 +14,13 @@ export async function getServerSideProps() {
   const response = await fetch(apiUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ page: 0 , pagetype:"blog"}),
+    body: JSON.stringify({ page: 0, pagetype: "blog" }),
   });
 
   const posts = JSON.parse(await response.json());
   const initialDisplayPosts = posts["initialDisplayPosts"];
 
-  console.log(initialDisplayPosts)
+  console.log(initialDisplayPosts);
   const title = posts["page_title"];
   const searchKeyWord = posts["search_keys_words"];
   const totalPages = posts["totalPages"];
@@ -34,14 +35,20 @@ export async function getServerSideProps() {
       initialDisplayPosts: initialDisplayPosts || null,
       title: title || null,
       searchKeyWord: searchKeyWord || null,
-      totalPages: totalPages || null
+      totalPages: totalPages || null,
     },
   };
 }
 
-export default function Blog({ initialDisplayPosts,pagination, title, searchKeyWord,totalPages }) {
-  const[currentPage, setCurrentPage] = useState(0);
-  const[currentPosts, setCurrentPosts] = useState(initialDisplayPosts);
+export default function Blog({
+  initialDisplayPosts,
+  pagination,
+  title,
+  searchKeyWord,
+  totalPages,
+}) {
+  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPosts, setCurrentPosts] = useState(initialDisplayPosts);
 
   const handlePageChange = async (pageIn) => {
     setCurrentPage(pageIn);
@@ -55,8 +62,7 @@ export default function Blog({ initialDisplayPosts,pagination, title, searchKeyW
     const data = JSON.parse(await response.json());
     const newPosts = data["initialDisplayPosts"];
     setCurrentPosts(newPosts);
-
-  }
+  };
 
   return (
     <>
@@ -67,9 +73,10 @@ export default function Blog({ initialDisplayPosts,pagination, title, searchKeyW
       <ListLayout
         initialDisplayPosts={currentPosts}
         pagination={pagination}
-        pageTitle = {title} 
-        defaultSearch  = {searchKeyWord}
-      />    
+        pageTitle={title}
+        defaultSearch={searchKeyWord}
+      />
+      <SideWidget />
       <Pagination
         totalPages={totalPages}
         onPageChange={handlePageChange}
