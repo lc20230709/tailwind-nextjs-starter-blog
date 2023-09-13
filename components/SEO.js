@@ -9,6 +9,7 @@ const CommonSEO = ({
   ogImage,
   twImage,
   canonicalUrl,
+  tags
 }) => {
   const router = useRouter();
   return (
@@ -22,15 +23,10 @@ const CommonSEO = ({
       />
       <meta property="og:type" content={ogType} />
       <meta property="og:site_name" content={siteMetadata.title} />
-      <meta property="og:description" content={description} />
-      <meta property="og:title" content={title} />
-      {ogImage.constructor.name === "Array" ? (
-        ogImage.map(({ url }) => (
-          <meta property="og:image" content={url} key={url} />
-        ))
-      ) : (
-        <meta property="og:image" content={ogImage} key={ogImage} />
-      )}
+      <meta name="description" content={description} />
+      <meta name="title" content={title} />
+      <meta name="keywords" content={tags}/>
+
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content={siteMetadata.twitter} />
       <meta name="twitter:title" content={title} />
@@ -88,7 +84,6 @@ export const TagSEO = ({ title, description }) => {
 };
 
 export const BlogSEO = ({
-  authorDetails,
   title,
   summary,
   date,
@@ -97,39 +92,12 @@ export const BlogSEO = ({
   images = [],
   canonicalUrl,
   description,
+  tags,
 }) => {
   summary = description;
   const router = useRouter();
   const publishedAt = new Date(date).toISOString();
   const modifiedAt = new Date(lastmod || date).toISOString();
-  let imagesArr =
-    images.length === 0
-      ? [siteMetadata.socialBanner]
-      : typeof images === "string"
-      ? [images]
-      : images;
-
-  const featuredImages = imagesArr.map((img) => {
-    return {
-      "@type": "ImageObject",
-      url: img.includes("http") ? img : siteMetadata.siteUrl + img,
-    };
-  });
-
-  let authorList;
-  if (authorDetails) {
-    authorList = authorDetails.map((author) => {
-      return {
-        "@type": "Person",
-        name: author.name,
-      };
-    });
-  } else {
-    authorList = {
-      "@type": "Person",
-      name: siteMetadata.author,
-    };
-  }
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -139,10 +107,8 @@ export const BlogSEO = ({
       "@id": url,
     },
     headline: title,
-    image: featuredImages,
     datePublished: publishedAt,
     dateModified: modifiedAt,
-    author: authorList,
     publisher: {
       "@type": "Organization",
       name: siteMetadata.author,
@@ -154,7 +120,6 @@ export const BlogSEO = ({
     description: summary,
   };
 
-  const twImageUrl = featuredImages[0].url;
 
   return (
     <>
@@ -162,9 +127,8 @@ export const BlogSEO = ({
         title={title}
         description={summary}
         ogType="article"
-        ogImage={featuredImages}
-        twImage={twImageUrl}
         canonicalUrl={canonicalUrl}
+        tags = {tags}
       />
       <Head>
         {date && (

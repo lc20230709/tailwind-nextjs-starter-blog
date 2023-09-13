@@ -68,13 +68,22 @@ export default function ListLayout({
                         ))}
                       </div>
                     </div>
-                    <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                    <div >
                     <Link 
                           href={`/blog/${slug}`}
-                          className="text-gray-900 dark:text-gray-100">
+                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
                       {summary}
                       </Link>
                     </div>
+                      <div className="text-base font-medium leading-6">
+                        <Link
+                          href={`/blog/${slug}`}
+                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                          aria-label={`Read "${title}"`}
+                        >
+                          点击阅读更多 &rarr;
+                        </Link>
+                      </div>
                   </div>
                 </article>
               </li>

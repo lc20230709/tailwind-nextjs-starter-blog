@@ -1,20 +1,20 @@
 import PageTitle from "@/components/PageTitle";
 import { MDXLayoutRenderer } from "@/components/MDXComponents";
 import { formatSlug, getFileBySlug } from "@/lib/mdx";
+import PostLayout from "@/layouts/PostLayout";
 
 const DEFAULT_LAYOUT = "PostLayout";
 
 export async function getStaticPaths() {
-  const apiUrl = process.env.NEXT_PUBLIC_BACKEND;
+  const apiUrl = process.env.NEXT_PUBLIC_BACKEND_SLUGS;
 
   const response = await fetch(apiUrl, { method: "POST" });
-  const allposts = JSON.parse(await response.json());
-  const posts = allposts["initialDisplayPosts"];
+  const slugs = JSON.parse(await response.json())["slug"];
 
   return {
-    paths: posts.map((p) => ({
+    paths: slugs.map((p) => ({
       params: {
-        slug: formatSlug(p.slug).split("/"),
+        slug: formatSlug(p).split("/"),
       },
     })),
     fallback: false,
@@ -22,42 +22,21 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  const apiUrl = process.env.NEXT_PUBLIC_BACKEND;
-  const response = await fetch(apiUrl, { method: "POST" });
 
-  const allPosts = JSON.parse(await response.json())["initialDisplayPosts"];
-
-  const postIndex = allPosts.findIndex(
-    (post) => formatSlug(post.slug) === params.slug.join("/")
-  );
-
-  const prev = allPosts[postIndex + 1] || null;
-  const next = allPosts[postIndex - 1] || null;
+  console.log(params.slug)
   const post = await getFileBySlug("blog", params.slug.join("/"));
-
-  const authorList = post.frontMatter.authors || ["default"];
-  const authorPromise = authorList.map(async (author) => {
-    const authorResults = await getFileBySlug("authors", [author]);
-    return authorResults.frontMatter;
-  });
-  const authorDetails = await Promise.all(authorPromise);
-  return { props: { post, authorDetails, prev, next } };
+  return { props: { post } };
 }
 
-export default function Blog({ post, authorDetails, prev, next }) {
+export default function Blog({ post,}) {
   const { mdxSource, toc, frontMatter } = post;
 
   return (
     <>
       {frontMatter.draft !== true ? (
-        <MDXLayoutRenderer
-          layout={frontMatter.layout || DEFAULT_LAYOUT}
-          toc={toc}
+        <PostLayout
           mdxSource={mdxSource}
           frontMatter={frontMatter}
-          authorDetails={authorDetails}
-          prev={prev}
-          next={next}
         />
       ) : (
         <div className="mt-24 text-center">
