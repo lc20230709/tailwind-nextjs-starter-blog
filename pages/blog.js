@@ -1,10 +1,10 @@
-import siteMetadata from "@/data/siteMetadata";
 import ListLayout from "@/layouts/ListLayout";
 import { PageSEO } from "@/components/SEO";
 import fetch from "isomorphic-unfetch";
 import { useState } from "react";
 import Pagination from "./Pagination";
 import SideWidget from "./side";
+import SearchBar from "@/layouts/searchi";
 
 export const POSTS_PER_PAGE = 5;
 
@@ -23,6 +23,9 @@ export async function getServerSideProps() {
   const title = posts["page_title"];
   const searchKeyWord = posts["search_keys_words"];
   const totalPages = posts["totalPages"];
+  const seoTitle = posts["seo_title"]
+  const seoDes = posts["seo_des"]
+  const tags = posts["tags"]
 
   return {
     props: {
@@ -30,6 +33,9 @@ export async function getServerSideProps() {
       title: title || null,
       searchKeyWord: searchKeyWord || null,
       totalPages: totalPages || null,
+      seoTitle: seoTitle || null,
+      seoDes: seoDes || null,
+      tags: tags || null,
     },
   };
 }
@@ -40,9 +46,13 @@ export default function Blog({
   title,
   searchKeyWord,
   totalPages,
+  seoTitle,
+  seoDes,
+  tags
 }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [currentPosts, setCurrentPosts] = useState(initialDisplayPosts);
+  const [query, setQuery] = useState('');
 
   const handlePageChange = async (pageIn) => {
     setCurrentPage(pageIn);
@@ -61,9 +71,19 @@ export default function Blog({
   return (
     <>
       <PageSEO
-        title={`Blog - ${siteMetadata.author}`}
-        description={siteMetadata.description}
+        title={seoTitle}
+        description={seoDes}
       />
+
+
+      <div className="space-y-2 pt-6 pb-8 md:space-y-4">
+        <h1 className="text-2xl font-extrabold leading-6 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-4xl md:leading-14 text-center">
+          {title}
+        </h1>
+        <SearchBar query={query} setQuery={setQuery} suggestion={tags} className="flex"/>
+      </div>
+
+
       <ListLayout
         initialDisplayPosts={currentPosts}
         pagination={pagination}

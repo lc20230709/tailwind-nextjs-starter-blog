@@ -7,8 +7,10 @@ module.exports = {
   },
   content: [
     "./pages/**/*.{js,jsx}",
+    "./pages/*.{js,jsx}",
     "./components/**/*.js",
     "./layouts/**/*.js",
+    "./layouts/*.js",
     "./lib/**/*.js",
     "./data/**/*.mdx",
   ],

@@ -51,9 +51,6 @@ export const PageSEO = ({ title, description }) => {
     <CommonSEO
       title={title}
       description={description}
-      ogType="website"
-      ogImage={ogImageUrl}
-      twImage={twImageUrl}
     />
   );
 };
