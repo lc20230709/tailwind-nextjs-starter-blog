@@ -70,7 +70,26 @@ export default function Blog({
 
   useEffect(() => {
     const fetchSearchResults = async () => {
-      console.log("new query is", query);
+      const searchUrl = process.env.NEXT_PUBLIC_BACKEND_SEARCH;
+      console.log(searchUrl);
+      console.log(query);
+      if (!query) {
+        return;
+      }
+      const response = await fetch(searchUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ page: 0, keywords: query }),
+      });
+
+      const data = JSON.parse(await response.json());
+
+      if (!data) {
+        return;
+      }
+      const newPosts = data["initialDisplayPosts"];
+      setCurrentPosts(newPosts);
+      setCurrentPage(data["currentPage"]);
     };
 
     fetchSearchResults();

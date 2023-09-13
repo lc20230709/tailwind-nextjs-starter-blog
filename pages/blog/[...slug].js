@@ -1,5 +1,4 @@
 import PageTitle from "@/components/PageTitle";
-import { MDXLayoutRenderer } from "@/components/MDXComponents";
 import { formatSlug, getFileBySlug } from "@/lib/mdx";
 import PostLayout from "@/layouts/PostLayout";
 
@@ -22,22 +21,18 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-
-  console.log(params.slug)
+  console.log(params.slug);
   const post = await getFileBySlug("blog", params.slug.join("/"));
   return { props: { post } };
 }
 
-export default function Blog({ post,}) {
+export default function Blog({ post }) {
   const { mdxSource, toc, frontMatter } = post;
 
   return (
     <>
       {frontMatter.draft !== true ? (
-        <PostLayout
-          mdxSource={mdxSource}
-          frontMatter={frontMatter}
-        />
+        <PostLayout mdxSource={mdxSource} frontMatter={frontMatter} />
       ) : (
         <div className="mt-24 text-center">
           <PageTitle>
