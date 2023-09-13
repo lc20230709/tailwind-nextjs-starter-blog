@@ -1,7 +1,7 @@
 import ListLayout from "@/layouts/ListLayout";
 import { PageSEO } from "@/components/SEO";
 import fetch from "isomorphic-unfetch";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Pagination from "./Pagination";
 import SideWidget from "./side";
 import SearchBar from "@/layouts/searchi";
@@ -23,9 +23,9 @@ export async function getServerSideProps() {
   const title = posts["page_title"];
   const searchKeyWord = posts["search_keys_words"];
   const totalPages = posts["totalPages"];
-  const seoTitle = posts["seo_title"]
-  const seoDes = posts["seo_des"]
-  const tags = posts["tags"]
+  const seoTitle = posts["seo_title"];
+  const seoDes = posts["seo_des"];
+  const tags = posts["tags"];
 
   return {
     props: {
@@ -48,11 +48,11 @@ export default function Blog({
   totalPages,
   seoTitle,
   seoDes,
-  tags
+  tags,
 }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [currentPosts, setCurrentPosts] = useState(initialDisplayPosts);
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
 
   const handlePageChange = async (pageIn) => {
     setCurrentPage(pageIn);
@@ -68,21 +68,24 @@ export default function Blog({
     setCurrentPosts(newPosts);
   };
 
+  useEffect(() => {
+    const fetchSearchResults = async () => {
+      console.log("new query is", query);
+    };
+
+    fetchSearchResults();
+  }, [query]);
+
   return (
     <>
-      <PageSEO
-        title={seoTitle}
-        description={seoDes}
-      />
-
+      <PageSEO title={seoTitle} description={seoDes} />
 
       <div className="space-y-2 pt-6 pb-8 md:space-y-4">
-        <h1 className="text-2xl font-extrabold leading-6 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-4xl md:leading-14 text-center">
+        <h1 className="text-center text-2xl font-extrabold leading-6 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-4xl md:leading-14">
           {title}
         </h1>
-        <SearchBar query={query} setQuery={setQuery} suggestion={tags} className="flex"/>
+        <SearchBar query={query} setQuery={setQuery} suggestion={tags} />
       </div>
-
 
       <ListLayout
         initialDisplayPosts={currentPosts}
