@@ -12,7 +12,12 @@ const apiUrl = process.env.NEXT_PUBLIC_BACKEND;
 const tagUrl = process.env.NEXT_PUBLIC_GETTAG;
 
 export async function getStaticPaths() {
-  const response = await fetch(tagUrl, { method: "POST" });
+  const response = await fetch(tagUrl, {
+    mode: "cors",
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ pagetype: "tag_slug" }),
+  });
   const tagsRes = await response.json();
   const tags = JSON.parse(tagsRes)["tags"];
 
@@ -27,25 +32,29 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-
   const tagLists = process.env.NEXT_PUBLIC_BACKEND_TAG;
-  const response = await fetch(tagLists, { method: "POST",    headers: { "Content-Type": "application/json" },body: JSON.stringify({ page: 0, pagetype: "tag", tag:params.tag }) });
+  const response = await fetch(tagLists, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ page: 0, pagetype: "tag", tag: params.tag }),
+  });
 
   const posts = JSON.parse(await response.json());
   const initialDisplayPosts = posts["initialDisplayPosts"];
 
-
   const searchKeyWord = posts["search_keys_words"];
   const totalPages = posts["totalPages"];
 
-  return { props: { 
+  return {
+    props: {
       initialDisplayPosts: initialDisplayPosts || null,
       totalPages: totalPages || null,
-      tag: params.tag || null
-   } };
+      tag: params.tag || null,
+    },
+  };
 }
 
-export default function Tag({ initialDisplayPosts,totalPages,tag }) {
+export default function Tag({ initialDisplayPosts, totalPages, tag }) {
   // Capitalize first letter and convert space to dash
   const [currentPage, setCurrentPage] = useState(0);
   const [currentPosts, setCurrentPosts] = useState(initialDisplayPosts);
@@ -68,7 +77,11 @@ export default function Tag({ initialDisplayPosts,totalPages,tag }) {
         title={`${tag} - ${siteMetadata.author}`}
         description={`${tag} tags - ${siteMetadata.author}`}
       />
-      <ListLayout initialDisplayPosts={initialDisplayPosts} pageTitle={tag} defaultSearch={tag} />
+      <ListLayout
+        initialDisplayPosts={initialDisplayPosts}
+        pageTitle={tag}
+        defaultSearch={tag}
+      />
       <SideWidget />
     </>
   );
