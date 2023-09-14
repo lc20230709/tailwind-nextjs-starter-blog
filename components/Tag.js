@@ -5,7 +5,7 @@ const Tag = ({ text }) => {
   return (
     <Link href={`/tags/${kebabCase(text)}`}>
       <a
-        className="mr-3 text-sm font-medium uppercase text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+        className="text-1xl mr-3 font-medium uppercase text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
         target="_blank"
         rel="noopener noreferrer"
       >

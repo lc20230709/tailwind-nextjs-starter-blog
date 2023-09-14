@@ -9,7 +9,7 @@ const siteMetadata = {
   siteLogo: "/static/images/logo.png",
   image: "/static/images/avatar.png",
   socialBanner: "/static/images/twitter-card.png",
-  locale: "en-US",
+  locale: "zh-CN",
   analytics: {
     // If you want to use an analytics provider you have to add it to the
     // content security policy in the `next.config.js` file.

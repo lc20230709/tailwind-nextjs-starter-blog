@@ -68,11 +68,18 @@ export default function PostLayout({ mdxSource, frontMatter }) {
             </div>
           </header>
           <div className="space-y-4 leading-relaxed tracking-wide">
-            <div>
-              <div className="prose max-w-none pt-5 tracking-widest dark:prose-dark">
-                {mdxSource}
+            <div className="space-y-6 bg-gray-100 text-lg leading-relaxed tracking-wide text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+              <div>
+                <div className="prose max-w-none pt-5 tracking-widest dark:prose-dark">
+                  <pre
+                    className="bg-white font-sans text-xl text-black"
+                    style={{ whiteSpace: "pre-wrap", lineHeight: "2" }}
+                  >
+                    {mdxSource}
+                  </pre>
+                </div>
+                <Comments frontMatter={frontMatter} />
               </div>
-              <Comments frontMatter={frontMatter} />
             </div>
             <footer></footer>
           </div>
