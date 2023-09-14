@@ -97,7 +97,7 @@ export default function Blog({
 
   return (
     <>
-      <PageSEO title={seoTitle} description={seoDes} />
+      <PageSEO title={seoTitle} description={seoDes} tags={tags} />
 
       <div className="space-y-2 pt-6 pb-8 md:space-y-4">
         <h1 className="text-center text-2xl font-extrabold leading-6 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-4xl md:leading-14">

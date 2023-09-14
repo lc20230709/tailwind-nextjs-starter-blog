@@ -9,7 +9,7 @@ const CommonSEO = ({
   ogImage,
   twImage,
   canonicalUrl,
-  tags
+  tags,
 }) => {
   const router = useRouter();
   return (
@@ -25,7 +25,7 @@ const CommonSEO = ({
       <meta property="og:site_name" content={siteMetadata.title} />
       <meta name="description" content={description} />
       <meta name="title" content={title} />
-      <meta name="keywords" content={tags}/>
+      <meta name="keywords" content={tags} />
 
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:site" content={siteMetadata.twitter} />
@@ -44,15 +44,10 @@ const CommonSEO = ({
   );
 };
 
-export const PageSEO = ({ title, description }) => {
+export const PageSEO = ({ title, description, tags }) => {
   const ogImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner;
   const twImageUrl = siteMetadata.siteUrl + siteMetadata.socialBanner;
-  return (
-    <CommonSEO
-      title={title}
-      description={description}
-    />
-  );
+  return <CommonSEO title={title} description={description} tags={tags} />;
 };
 
 export const TagSEO = ({ title, description }) => {
@@ -117,7 +112,6 @@ export const BlogSEO = ({
     description: summary,
   };
 
-
   return (
     <>
       <CommonSEO
@@ -125,7 +119,7 @@ export const BlogSEO = ({
         description={summary}
         ogType="article"
         canonicalUrl={canonicalUrl}
-        tags = {tags}
+        tags={tags}
       />
       <Head>
         {date && (

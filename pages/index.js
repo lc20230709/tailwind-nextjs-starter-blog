@@ -25,11 +25,20 @@ export async function getServerSideProps() {
   const data = JSON.parse(await response.json());
   const currentPosts = data["initialDisplayPosts"];
   const totalPages = data["totalPages"];
+  const seoTitle = data["seo_title"];
+  const seoDes = data["seo_des"];
+  const tags = data["tags"];
 
-  return { props: { currentPosts, totalPages } };
+  return { props: { currentPosts, totalPages, seoTitle, seoDes, tags } };
 }
 
-export default function Home({ currentPosts, totalPages }) {
+export default function Home({
+  currentPosts,
+  totalPages,
+  seoTitle,
+  seoDes,
+  tags,
+}) {
   const [currentPage, setCurrentPage] = useState(0);
   const [posts, setCurrentPosts] = useState(currentPosts);
 
@@ -50,10 +59,7 @@ export default function Home({ currentPosts, totalPages }) {
 
   return (
     <>
-      <PageSEO
-        title={siteMetadata.title}
-        description={siteMetadata.description}
-      />
+      <PageSEO title={seoTitle} description={seoDes} tags={tags} />
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
           <h1 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14">
@@ -95,11 +101,11 @@ export default function Home({ currentPosts, totalPages }) {
                           </div>
                         </div>
                         <div>
-                        <Link
-                          href={`/blog/${slug}`}
-                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                        >
-                          {summary}
+                          <Link
+                            href={`/blog/${slug}`}
+                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                          >
+                            {summary}
                           </Link>
                         </div>
                       </div>

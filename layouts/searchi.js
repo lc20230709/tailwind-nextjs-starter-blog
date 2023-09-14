@@ -41,7 +41,7 @@ const SearchBar = ({ query, setQuery }) => {
   return (
     <div className="flex flex-col items-center">
       <input
-        className="w-full rounded-3xl border-red-500 md:w-[390px]"
+        className="w-full rounded-3xl border-red-500 dark:bg-gray-800 dark:text-gray-100 md:w-[390px]"
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}

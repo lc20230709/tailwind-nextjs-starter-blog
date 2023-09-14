@@ -21,7 +21,6 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps({ params }) {
-  console.log(params.slug);
   const post = await getFileBySlug("blog", params.slug.join("/"));
   return { props: { post } };
 }
