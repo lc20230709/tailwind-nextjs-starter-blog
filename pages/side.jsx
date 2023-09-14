@@ -5,7 +5,7 @@ const handleLinkClick = (url) => {
 };
 
 const Widget = ({ title, imageUrl, link }) => (
-  <div className="w-full p-2 md:w-1/4">
+  <div className="my-4 px-4 md:my-2 md:px-2">
     <div className="flex flex-col items-center">
       <a
         className="w-full truncate text-center hover:bg-red-700"
@@ -37,30 +37,10 @@ const DataDisplay = ({ data }) => (
   </div>
 );
 
-const SideWidget = () => {
-  const widgetData = [
-    {
-      title: "Title 1",
-      imageUrl: "/static/images/pic.jpg",
-      link: "http://google.com",
-    },
-    {
-      title: "Title 2",
-      imageUrl: "/static/images/pic.jpg",
-      link: "http://google.com",
-    },
-    {
-      title: "Title 3",
-      imageUrl: "/static/images/pic.jpg",
-      link: "http://google.com",
-    },
-    {
-      title: "Title 4",
-      imageUrl: "/static/images/pic.jpg",
-      link: "http://google.com",
-    },
-  ];
-
+const SideWidget = ({ widgetData }) => {
+  if (!widgetData) {
+    return <div></div>;
+  }
   return (
     <div className="flex cursor-pointer flex-wrap justify-center text-center">
       <DataDisplay data={widgetData} />

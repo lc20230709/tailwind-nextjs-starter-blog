@@ -9,6 +9,7 @@ import SearchBar from "@/layouts/searchi";
 export const POSTS_PER_PAGE = 5;
 
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND;
+const sideUrl = process.env.NEXT_PUBLIC_BACKEND_SIDE;
 
 export async function getServerSideProps() {
   const response = await fetch(apiUrl, {
@@ -27,6 +28,13 @@ export async function getServerSideProps() {
   const seoDes = posts["seo_des"];
   const tags = posts["tags"];
 
+  const responseSide = await fetch(sideUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ page: 0 }),
+  });
+  const sideData = JSON.parse(await responseSide.json())["initialDisplayPosts"];
+
   return {
     props: {
       initialDisplayPosts: initialDisplayPosts || null,
@@ -36,6 +44,7 @@ export async function getServerSideProps() {
       seoTitle: seoTitle || null,
       seoDes: seoDes || null,
       tags: tags || null,
+      sideData: sideData || null,
     },
   };
 }
@@ -49,6 +58,7 @@ export default function Blog({
   seoTitle,
   seoDes,
   tags,
+  sideData,
 }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [currentPosts, setCurrentPosts] = useState(initialDisplayPosts);
@@ -71,8 +81,7 @@ export default function Blog({
   useEffect(() => {
     const fetchSearchResults = async () => {
       const searchUrl = process.env.NEXT_PUBLIC_BACKEND_SEARCH;
-      console.log(searchUrl);
-      console.log(query);
+
       if (!query) {
         return;
       }
@@ -112,7 +121,7 @@ export default function Blog({
         pageTitle={title}
         defaultSearch={searchKeyWord}
       />
-      <SideWidget />
+      <SideWidget widgetData={sideData} />
       <Pagination
         totalPages={totalPages}
         onPageChange={handlePageChange}

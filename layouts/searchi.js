@@ -9,7 +9,6 @@ const SearchBar = ({ query, setQuery }) => {
   const fetchSuggestions = async (input) => {
     // 用于模拟 API 请求，实际情况下你会在这里调用真实的 API
     const sugURL = process.env.NEXT_PUBLIC_BACKEND_SUGG;
-    console.log(sugURL);
     const response = await fetch(sugURL, {
       method: "POST",
       headers: { "Content-Type": "application/json" },

@@ -23,25 +23,19 @@ const postDateTemplate = {
   day: "numeric",
 };
 
-export default function PostLayout({
-  mdxSource,
-  frontMatter
-}) {
-
+export default function PostLayout({ mdxSource, frontMatter }) {
   const tags = frontMatter.tags;
   const date = frontMatter.date;
   const title = frontMatter.title;
   const slug = frontMatter.slug;
+  const sideData = frontMatter.sideData;
 
   return (
     <SectionContainer>
-      <BlogSEO
-        url={`${siteMetadata.siteUrl}/blog/${slug}`}
-        {...frontMatter}
-      />
+      <BlogSEO url={`${siteMetadata.siteUrl}/blog/${slug}`} {...frontMatter} />
       <ScrollTopAndComment />
       <article>
-        <div >
+        <div>
           <header className="pt-6 xl:pb-6">
             <div className="space-y-1 text-center">
               <dl className="space-y-10">
@@ -61,34 +55,30 @@ export default function PostLayout({
                 <PageTitle>{title}</PageTitle>
               </div>
             </div>
-              <div className="">
-                {tags && (
-                  <div className="">
-                    <div className="flex flex-wrap">
-                      {tags.map((tag) => (
-                        <Tag key={tag} text={tag} />
-                      ))}
-                    </div>
+            <div className="">
+              {tags && (
+                <div className="">
+                  <div className="flex flex-wrap">
+                    {tags.map((tag) => (
+                      <Tag key={tag} text={tag} />
+                    ))}
                   </div>
-                )}
-              </div>
+                </div>
+              )}
+            </div>
           </header>
-          <div
-            class="tracking-wide leading-relaxed space-y-4"
-          >
-
+          <div className="space-y-4 leading-relaxed tracking-wide">
             <div>
-              <div className="prose max-w-none pt-5 dark:prose-dark tracking-widest">
+              <div className="prose max-w-none pt-5 tracking-widest dark:prose-dark">
                 {mdxSource}
               </div>
               <Comments frontMatter={frontMatter} />
             </div>
-            <footer>
-            </footer>
+            <footer></footer>
           </div>
         </div>
       </article>
-      <SideWidget />
+      <SideWidget widgetData={sideData} />
     </SectionContainer>
   );
 }

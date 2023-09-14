@@ -5,8 +5,6 @@ import Tag from "@/components/Tag";
 import siteMetadata from "@/data/siteMetadata";
 import formatDate from "@/lib/utils/formatDate";
 
-import NewsletterForm from "@/components/NewsletterForm";
-
 import SideWidget from "./side";
 
 import Pagination from "./Pagination";
@@ -14,6 +12,7 @@ import Pagination from "./Pagination";
 const MAX_DISPLAY = 50;
 
 const apiUrl = process.env.NEXT_PUBLIC_BACKEND;
+const sideUrl = process.env.NEXT_PUBLIC_BACKEND_SIDE;
 
 export async function getServerSideProps() {
   const response = await fetch(apiUrl, {
@@ -29,7 +28,15 @@ export async function getServerSideProps() {
   const seoDes = data["seo_des"];
   const tags = data["tags"];
 
-  return { props: { currentPosts, totalPages, seoTitle, seoDes, tags } };
+  const responseSide = await fetch(sideUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ page: 0 }),
+  });
+  const sideData = JSON.parse(await responseSide.json())["initialDisplayPosts"];
+  return {
+    props: { currentPosts, totalPages, seoTitle, seoDes, tags, sideData },
+  };
 }
 
 export default function Home({
@@ -38,6 +45,7 @@ export default function Home({
   seoTitle,
   seoDes,
   tags,
+  sideData,
 }) {
   const [currentPage, setCurrentPage] = useState(0);
   const [posts, setCurrentPosts] = useState(currentPosts);
@@ -137,7 +145,7 @@ export default function Home({
           </Link>
         </div>
       )}
-      <SideWidget />
+      <SideWidget widgetData={sideData} />
 
       <Pagination
         totalPages={totalPages}
